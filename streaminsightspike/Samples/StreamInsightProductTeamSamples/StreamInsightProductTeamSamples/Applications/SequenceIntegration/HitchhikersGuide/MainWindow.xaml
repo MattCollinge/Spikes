@@ -1,0 +1,40 @@
+﻿<Window x:Class="StreamInsight.Samples.SequenceIntegration.HitchhikersGuide.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:StreamInsight.Samples.SequenceIntegration;assembly=Common"
+        Title="Hitchhiker's Guide to StreamInsight" 
+        MinHeight="350" 
+        MinWidth="525"
+        Background="LightGray">
+    <Grid Name="_grid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ListView Name="_queriesListView"
+                  Margin="5, 3"
+                  ItemsSource="{Binding}" 
+                  SelectionChanged="QuerySelectionChanged">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="2" 
+                            CornerRadius="2" 
+                            BorderBrush="SlateGray" 
+                            Margin="2, 2">
+                        <StackPanel Width="200" 
+                                    Margin="2, 2">
+                            <TextBlock Text="{Binding Name}" 
+                                       FontWeight="Bold" />
+                            <TextBlock Text="{Binding Description}" 
+                                       TextWrapping="WrapWithOverflow" />
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <c:ObservableDataGridControl x:Name="_results" 
+                                 Grid.Column="1" 
+                                 Margin="5, 3">
+        </c:ObservableDataGridControl>
+    </Grid>
+</Window>

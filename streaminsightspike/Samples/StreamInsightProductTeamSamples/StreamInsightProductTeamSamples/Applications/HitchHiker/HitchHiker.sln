@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5E74C64F-D860-4E51-BE87-73D7F73C41B9}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
+		README.txt = README.txt
+		TollInput.txt = TollInput.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncCsvAdapter", "..\..\Adapters\AsyncCsv\AsyncCsvAdapter.csproj", "{D4473047-B7D8-4134-BFAC-36F0FE8AF97B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloToll", "HelloToll\HelloToll.csproj", "{29BCF268-1E69-476F-8ACE-7597EF1B78BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloTollTutorial", "HelloTollTutorial\HelloTollTutorial.csproj", "{DDC4BFDB-8EAD-4039-8604-95D17031E864}"
+EndProject
+Global
+		GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D4473047-B7D8-4134-BFAC-36F0FE8AF97B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4473047-B7D8-4134-BFAC-36F0FE8AF97B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4473047-B7D8-4134-BFAC-36F0FE8AF97B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4473047-B7D8-4134-BFAC-36F0FE8AF97B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29BCF268-1E69-476F-8ACE-7597EF1B78BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29BCF268-1E69-476F-8ACE-7597EF1B78BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29BCF268-1E69-476F-8ACE-7597EF1B78BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29BCF268-1E69-476F-8ACE-7597EF1B78BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDC4BFDB-8EAD-4039-8604-95D17031E864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDC4BFDB-8EAD-4039-8604-95D17031E864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDC4BFDB-8EAD-4039-8604-95D17031E864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDC4BFDB-8EAD-4039-8604-95D17031E864}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

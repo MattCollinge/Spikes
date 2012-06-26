@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDA.Analytics.Adapters", "EDA.Analytics.MassTransitAdapter\EDA.Analytics.Adapters.csproj", "{D8B76089-C701-4239-BBFD-42A7EE2F11AF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{79160A2B-CF75-4169-ADC7-C8EF5491CC92}"
+	ProjectSection(SolutionItems) = preProject
+		ToDo.txt = ToDo.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDA.Analytics.Adapters.Tests", "EDA.Analytics.Adapters.Tests\EDA.Analytics.Adapters.Tests.csproj", "{5E7A996C-7A12-4CA4-AE6D-C59E17BA7B0C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8B76089-C701-4239-BBFD-42A7EE2F11AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8B76089-C701-4239-BBFD-42A7EE2F11AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8B76089-C701-4239-BBFD-42A7EE2F11AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8B76089-C701-4239-BBFD-42A7EE2F11AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E7A996C-7A12-4CA4-AE6D-C59E17BA7B0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E7A996C-7A12-4CA4-AE6D-C59E17BA7B0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E7A996C-7A12-4CA4-AE6D-C59E17BA7B0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E7A996C-7A12-4CA4-AE6D-C59E17BA7B0C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

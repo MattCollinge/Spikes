@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{F8D9226C-E9FB-4B94-962D-B2DA1C753892}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HitchhikersGuide", "HitchhikersGuide\HitchhikersGuide.csproj", "{9C5C804D-695D-4C83-A115-5163DFE91DA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind", "Northwind\Northwind.csproj", "{1BB80849-5975-4823-8873-6F5F193AB2CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerformanceCounters", "PerformanceCounters\PerformanceCounters.csproj", "{F6C29097-DAD0-4091-AD97-437C7BC4FDC1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A85ED973-0019-4466-8A43-23E12DFFBA3F}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
+		README.txt = README.txt
+	EndProjectSection
+EndProject
+Global
+		GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F8D9226C-E9FB-4B94-962D-B2DA1C753892}.Debug|x86.ActiveCfg = Debug|x86
+		{F8D9226C-E9FB-4B94-962D-B2DA1C753892}.Debug|x86.Build.0 = Debug|x86
+		{F8D9226C-E9FB-4B94-962D-B2DA1C753892}.Release|x86.ActiveCfg = Release|x86
+		{F8D9226C-E9FB-4B94-962D-B2DA1C753892}.Release|x86.Build.0 = Release|x86
+		{9C5C804D-695D-4C83-A115-5163DFE91DA1}.Debug|x86.ActiveCfg = Debug|x86
+		{9C5C804D-695D-4C83-A115-5163DFE91DA1}.Debug|x86.Build.0 = Debug|x86
+		{9C5C804D-695D-4C83-A115-5163DFE91DA1}.Release|x86.ActiveCfg = Release|x86
+		{9C5C804D-695D-4C83-A115-5163DFE91DA1}.Release|x86.Build.0 = Release|x86
+		{1BB80849-5975-4823-8873-6F5F193AB2CE}.Debug|x86.ActiveCfg = Debug|x86
+		{1BB80849-5975-4823-8873-6F5F193AB2CE}.Debug|x86.Build.0 = Debug|x86
+		{1BB80849-5975-4823-8873-6F5F193AB2CE}.Release|x86.ActiveCfg = Release|x86
+		{1BB80849-5975-4823-8873-6F5F193AB2CE}.Release|x86.Build.0 = Release|x86
+		{F6C29097-DAD0-4091-AD97-437C7BC4FDC1}.Debug|x86.ActiveCfg = Debug|x86
+		{F6C29097-DAD0-4091-AD97-437C7BC4FDC1}.Debug|x86.Build.0 = Debug|x86
+		{F6C29097-DAD0-4091-AD97-437C7BC4FDC1}.Release|x86.ActiveCfg = Release|x86
+		{F6C29097-DAD0-4091-AD97-437C7BC4FDC1}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

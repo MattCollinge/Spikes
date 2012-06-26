@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{28D75DDA-CA3C-4CFB-87EB-76C04ECD3592}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AdvantIQ.ExampleAdapters</RootNamespace>
+    <AssemblyName>ExampleAdapters</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ExampleAdapters, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <ExecutableExtension>.exe</ExecutableExtension>
+    </Reference>
+    <Reference Include="Microsoft.ComplexEventProcessing, Version=20.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ComplexEventProcessing.Adapters, Version=20.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ComplexEventProcessing.Diagnostics, Version=20.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FaceBookGetAccessTokenWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FaceBookGetAccessTokenWnd.Designer.cs">
+      <DependentUpon>FaceBookGetAccessTokenWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FaceBookTestWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FaceBookTestWnd.Designer.cs">
+      <DependentUpon>FaceBookTestWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Input\Facebook\FacebookConfig.cs" />
+    <Compile Include="Input\Facebook\FacebookFactory.cs" />
+    <Compile Include="Input\Facebook\FacebookInput.cs" />
+    <Compile Include="Input\Facebook\FacebookItem.cs" />
+    <Compile Include="Input\Twitter\ExtensionMethods.cs" />
+    <Compile Include="Input\Twitter\Tweet.cs" />
+    <Compile Include="Input\Twitter\TwitterConfig.cs" />
+    <Compile Include="Input\Twitter\TwitterFactory.cs" />
+    <Compile Include="Input\Twitter\TwitterInput.cs" />
+    <Compile Include="MainWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainWnd.Designer.cs">
+      <DependentUpon>MainWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Output\WinFormStacker\IStackerCtl.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="StreamInsightSetupInfo.cs" />
+    <Compile Include="TwitterTestWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TwitterTestWnd.Designer.cs">
+      <DependentUpon>TwitterTestWnd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Output\ConsoleSimple\ConsoleIntervalOutput.cs" />
+    <Compile Include="Output\ConsoleSimple\ConsoleEdgeOutput.cs" />
+    <None Include="app.config" />
+    <None Include="Output\ConsoleSimple\ObserverToConsole.cs" />
+    <Compile Include="Output\ConsoleSimple\ConsoleConfig.cs" />
+    <Compile Include="Output\ConsoleSimple\ConsoleFactory.cs" />
+    <Compile Include="Output\ConsoleSimple\ConsolePointOutput.cs" />
+    <Compile Include="Output\WinFormStacker\StackerEdgeOutput.cs" />
+    <Compile Include="Output\WinFormStacker\StackerIntervalOutput.cs" />
+    <Compile Include="Output\WinFormStacker\StackerPointOutput.cs" />
+    <Compile Include="Output\WinFormStacker\StackerCtl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Output\WinFormStacker\StackerConfig.cs" />
+    <Compile Include="Output\WinFormStacker\StackerFactory.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Input\YahooFinance\ScreenScraper.cs" />
+    <Compile Include="Input\YahooFinance\StockQuote.cs" />
+    <Compile Include="Input\YahooFinance\YahooFinanceConfig.cs" />
+    <Compile Include="Input\YahooFinance\YahooFinanceFactory.cs" />
+    <Compile Include="Input\YahooFinance\YahooFinanceInput.cs" />
+    <Compile Include="Input\YahooFinance\Patterns.cs" />
+    <Compile Include="YahooTestWnd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="YahooTestWnd.Designer.cs">
+      <DependentUpon>YahooTestWnd.cs</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LICENSE_Newtonsoft_Json.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FaceBookGetAccessTokenWnd.resx">
+      <DependentUpon>FaceBookGetAccessTokenWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FaceBookTestWnd.resx">
+      <DependentUpon>FaceBookTestWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainWnd.resx">
+      <DependentUpon>MainWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TwitterTestWnd.resx">
+      <DependentUpon>TwitterTestWnd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="YahooTestWnd.resx">
+      <DependentUpon>YahooTestWnd.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
