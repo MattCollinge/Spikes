@@ -56,8 +56,10 @@
   <ItemGroup>
     <Compile Include="BrandQuoteInputAdapter.cs" />
     <Compile Include="BrandQuoteInputAdapterFactory.cs" />
+    <Compile Include="BrandQuoteInputConfig.cs" />
     <Compile Include="BrandQuoteOutputAdapterFactory.cs" />
     <Compile Include="BrandQuoteOutputAdapter.cs" />
+    <Compile Include="BrandQuoteOutputConfig.cs" />
     <Compile Include="IInputAdapter.cs" />
     <Compile Include="IOutputAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

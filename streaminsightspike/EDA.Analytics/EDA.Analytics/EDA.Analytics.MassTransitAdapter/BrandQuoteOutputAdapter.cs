@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Threading;
 using EDA.Analytics.Adapters;
+using MassTransit;
 using Microsoft.ComplexEventProcessing;
 using Microsoft.ComplexEventProcessing.Adapters;
 
@@ -10,8 +11,9 @@ namespace EDA.Analytics.Adapters
     public class BrandQuoteOutputAdapter : TypedPointOutputAdapter<BrandQuote>
     {
         public readonly static IFormatProvider QuoteFormatProvider = CultureInfo.InvariantCulture.NumberFormat;
-        private PointEvent<BrandQuote> pendingEvent;
+        private PointEvent<BrandQuote> currentEvent;
         private BrandQuoteOutputConfig _config;
+        private IServiceBus _bus;
 
         /// <summary>
         /// Constructor
@@ -20,19 +22,22 @@ namespace EDA.Analytics.Adapters
         public BrandQuoteOutputAdapter(BrandQuoteOutputConfig config)
         {
             _config = config;
-            //Patterns tmp = new Patterns(config.StockSymbol);
-            //screenScraper = new ScreenScraper(tmp.URL,
-            //    config.Timeout, tmp.MatchPattern);
+         
+            _bus = ServiceBusFactory.New(sbc =>
+            {
+                sbc.UseRabbitMqRouting();
+                sbc.ReceiveFrom(_config.SendOnMassTransitFrom);
+            });
         }
 
         public override void Start()
         {
-            ProduceEvents();
+            ConsumeEvents();
         }
 
         public override void Resume()
         {
-            ProduceEvents();
+            ConsumeEvents();
         }
 
         protected override void Dispose(bool disposing)
@@ -40,88 +45,59 @@ namespace EDA.Analytics.Adapters
             base.Dispose(disposing);
         }
 
-        /// <summary>
-        /// Main loop
-        /// </summary>
-        private void ProduceEvents()
+        public void ConsumeEvents()
         {
-            //var currEvent = default(PointEvent<BrandQuote>);
+            PointEvent<BrandQuote> currentEvent = default(PointEvent<BrandQuote>);
 
-            //EnqueueCtiEvent(DateTimeOffset.Now);
-            //try
-            //{
-            //    // Loop until stop signal
-            //    while (AdapterState != AdapterState.Stopping)
-            //    {
-            //        if (pendingEvent != null)
-            //        {
-            //            currEvent = pendingEvent;
-            //            pendingEvent = null;
-            //        }
-            //        else
-            //        {
-            //            try
-            //            {
-            //                // Read from MassTransit
-            //                //var str = screenScraper.Scrape();
-            //                //var value = double.Parse(str, QuoteFormatProvider);
-
-            //                // Produce INSERT event
-            //                currEvent = CreateInsertEvent();
-            //                currEvent.StartTime = DateTimeOffset.Now;
-            //                currEvent.Payload = new BrandQuote() { Brand = massTransitMessage.Brand,
-            //                    EnquiryId = massTransitMessage.EnquiryId, 
-            //                    Premium = massTransitMessage.Premium,
-            //                    ProviderQuoteId = massTransitMessage.ProviderQuoteId,
-            //                    SourceQuoteEngine = massTransitMessage.SourceQuoteEngine
-            //                };
-            //                pendingEvent = null;
-            //                //PrintEvent(currEvent);
-            //                Enqueue(ref currEvent);
-
-            //                // Also send an CTI event
-            //                EnqueueCtiEvent(DateTimeOffset.Now.AddTicks(2));
-
-            //            }
-            //            catch
-            //            {
-            //                // Error handling should go here
-            //            }
-            //            Thread.Sleep(_config.Interval);
-            //        }
-            //    }
-
-            //    if (pendingEvent != null)
-            //    {
-            //        currEvent = pendingEvent;
-            //        pendingEvent = null;
-            //    }
-
-            //    PrepareToStop(currEvent);
-            //    Stopped();
-            //}
-            //catch (AdapterException e)
-            //{
-            //    Console.WriteLine("BrandQuoteInputAdapter.ProduceEvents - " + e.Message + e.StackTrace);
-            //}
-        }
-
-        private void PrepareToStop(PointEvent<BrandQuote> currEvent)
-        {
-            //EnqueueCtiEvent(DateTime.Now);
-            if (currEvent != null)
+            // if the engine is attempting to stop the adapter,  make one more attempt to dequeue the last event from the engine,
+            // clean up state and exit worker thread
+            if (AdapterState == AdapterState.Stopping)
             {
-                // Do this to avoid memory leaks
-                ReleaseEvent(ref currEvent);
+                this.PrepareToStop();
+                this.Stopped();
+                return;
+            }
+
+            // NOTE: at any point in time during execution of the code below, if the Adapter
+            // state changes to Stopping, the engine will resume the adapter (i.e. call Resume())
+            // just one more time, and the stopping condition will be trapped at the check above.
+
+            // Dequeue the event
+            // if the engine does not have any events, it puts the adapter in a Suspended state; or it
+            // could also be putting the adapter in a Stopping state. If it is in the suspended state,
+            // you can optionally invoke a method here for housekeeping. Signal to the engine that the
+            // adapter is ready to be resumed, and exit the worker thread
+            if (DequeueOperationResult.Empty == Dequeue(out currentEvent))
+            {
+                Ready();
+                return;
+            }
+
+            try
+            {
+
+                //Create Message for MassTransit and publish
+                var message = new MassTransitMessage()
+                                  {
+                                      Brand = currentEvent.Payload.Brand,
+                                      EnquiryId = currentEvent.Payload.EnquiryId,
+                                      ProviderQuoteId = currentEvent.Payload.ProviderQuoteId,
+                                      Premium = currentEvent.Payload.Premium,
+                                      SourceQuoteEngine = currentEvent.Payload.SourceQuoteEngine
+                                  };
+                _bus.Publish<MassTransitMessage>(message);
+            }
+            finally
+            {
+                ReleaseEvent(ref currentEvent);
             }
         }
 
-        private void PrepareToResume(PointEvent<BrandQuote> currEvent)
+        private void PrepareToStop()
         {
-            pendingEvent = currEvent;
+           //Dispose of MassTransit bus
+            _bus.Dispose();
         }
-
-       
     }
 
   

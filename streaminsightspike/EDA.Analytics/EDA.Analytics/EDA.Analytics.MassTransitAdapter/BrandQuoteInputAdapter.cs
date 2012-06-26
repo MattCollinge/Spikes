@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Threading;
 using EDA.Analytics.Adapters;
+using MassTransit;
 using Microsoft.ComplexEventProcessing;
 using Microsoft.ComplexEventProcessing.Adapters;
 
@@ -10,8 +11,10 @@ namespace EDA.Analytics.Adapters
     public class BrandQuoteInputAdapter : TypedPointInputAdapter<BrandQuote>
     {
         public readonly static IFormatProvider QuoteFormatProvider = CultureInfo.InvariantCulture.NumberFormat;
-        private PointEvent<BrandQuote> pendingEvent;
-        private BrandQuoteInputConfig _config;
+        private PointEvent<BrandQuote> _pendingEvent;
+        private readonly BrandQuoteInputConfig _config;
+        private readonly IServiceBus _bus;
+        private UnsubscribeAction _usubscribeAction = null;
 
         /// <summary>
         /// Constructor
@@ -20,19 +23,24 @@ namespace EDA.Analytics.Adapters
         public BrandQuoteInputAdapter(BrandQuoteInputConfig config)
         {
             _config = config;
-            //Patterns tmp = new Patterns(config.StockSymbol);
-            //screenScraper = new ScreenScraper(tmp.URL,
-            //    config.Timeout, tmp.MatchPattern);
-        }
+        
+            _bus = ServiceBusFactory.New(sbc =>
+            {
+                sbc.UseRabbitMqRouting();
+                sbc.ReceiveFrom(_config.ListenToMassTransitOn);
+            });
+
+             }
+
 
         public override void Start()
         {
-            ProduceEvents();
+           _usubscribeAction = _bus.SubscribeHandler<MassTransitMessage>((m) => ProduceEvents(m));
         }
 
         public override void Resume()
         {
-            ProduceEvents();
+            _usubscribeAction = _bus.SubscribeHandler<MassTransitMessage> ((m) => ProduceEvents(m));
         }
 
         protected override void Dispose(bool disposing)
@@ -43,39 +51,39 @@ namespace EDA.Analytics.Adapters
         /// <summary>
         /// Main loop
         /// </summary>
-        private void ProduceEvents()
+        private void ProduceEvents(MassTransitMessage message)
         {
             var currEvent = default(PointEvent<BrandQuote>);
 
             EnqueueCtiEvent(DateTimeOffset.Now);
             try
             {
-                // Loop until stop signal
-                while (AdapterState != AdapterState.Stopping)
+                //  until stop signal
+                if (AdapterState != AdapterState.Stopping)
                 {
-                    if (pendingEvent != null)
+                    if (_pendingEvent != null)
                     {
-                        currEvent = pendingEvent;
-                        pendingEvent = null;
+                        currEvent = _pendingEvent;
+                        _pendingEvent = null;
                     }
                     else
                     {
                         try
                         {
                             // Read from MassTransit
-                            //var str = screenScraper.Scrape();
-                            //var value = double.Parse(str, QuoteFormatProvider);
 
                             // Produce INSERT event
                             currEvent = CreateInsertEvent();
                             currEvent.StartTime = DateTimeOffset.Now;
-                            currEvent.Payload = new BrandQuote() { Brand = massTransitMessage.Brand,
-                                EnquiryId = massTransitMessage.EnquiryId, 
-                                Premium = massTransitMessage.Premium,
-                                ProviderQuoteId = massTransitMessage.ProviderQuoteId,
-                                SourceQuoteEngine = massTransitMessage.SourceQuoteEngine
-                            };
-                            pendingEvent = null;
+                            currEvent.Payload = new BrandQuote()
+                                                    {
+                                                        Brand = message.Brand,
+                                                        EnquiryId = message.EnquiryId,
+                                                        Premium = message.Premium,
+                                                        ProviderQuoteId = message.ProviderQuoteId,
+                                                        SourceQuoteEngine = message.SourceQuoteEngine
+                                                    };
+                            _pendingEvent = null;
                             //PrintEvent(currEvent);
                             Enqueue(ref currEvent);
 
@@ -83,22 +91,21 @@ namespace EDA.Analytics.Adapters
                             EnqueueCtiEvent(DateTimeOffset.Now.AddTicks(2));
 
                         }
-                        catch
+                        finally
                         {
-                            // Error handling should go here
+
                         }
-                        Thread.Sleep(_config.Interval);
                     }
+                    PrepareToStop(currEvent);
+                    Stopped();
+
                 }
 
-                if (pendingEvent != null)
+                if (_pendingEvent != null)
                 {
-                    currEvent = pendingEvent;
-                    pendingEvent = null;
+                    currEvent = _pendingEvent;
+                    _pendingEvent = null;
                 }
-
-                PrepareToStop(currEvent);
-                Stopped();
             }
             catch (AdapterException e)
             {
@@ -108,7 +115,8 @@ namespace EDA.Analytics.Adapters
 
         private void PrepareToStop(PointEvent<BrandQuote> currEvent)
         {
-            //EnqueueCtiEvent(DateTime.Now);
+            if (_usubscribeAction != null) _usubscribeAction();
+
             if (currEvent != null)
             {
                 // Do this to avoid memory leaks
@@ -118,19 +126,19 @@ namespace EDA.Analytics.Adapters
 
         private void PrepareToResume(PointEvent<BrandQuote> currEvent)
         {
-            pendingEvent = currEvent;
+            _pendingEvent = currEvent;
         }
 
        
     }
 
-    internal class massTransitMessage
+    public class MassTransitMessage
     {
-        public static string Brand;
-        public static Guid EnquiryId;
-        public static decimal Premium;
-        public static Guid ProviderQuoteId;
-        public static string SourceQuoteEngine;
+        public string Brand;
+        public Guid EnquiryId;
+        public decimal Premium;
+        public Guid ProviderQuoteId;
+        public string SourceQuoteEngine;
     }
 
     public struct BrandQuote

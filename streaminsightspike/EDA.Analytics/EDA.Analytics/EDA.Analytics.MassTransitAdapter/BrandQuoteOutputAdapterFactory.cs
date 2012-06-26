@@ -33,13 +33,4 @@ namespace EDA.Analytics.Adapters
         {
         }
     }
-
-    public class BrandQuoteOutputConfig
-    {
-    }
-
-    public class BrandQuoteInputConfig
-    {
-        public int Interval;
-    }
 }
