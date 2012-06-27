@@ -8,20 +8,22 @@ using MassTransit;
 using Microsoft.ComplexEventProcessing;
 using Microsoft.ComplexEventProcessing.Linq;
 using NUnit.Framework;
+using StreamInsight.Samples.Adapters.Wcf;
 
 namespace EDA.Analytics.Adapters.Tests.Integration
 {
     [TestFixture]
     public class BrandQuoteAdapters
     {
+        ManualResetEvent signal = new ManualResetEvent(false);
+          
 
         [Test]
         public void ShouldPassPointEventThrough()
         {
             //Given
-            MassTransitMessage recievedMessage = null;
-            ManualResetEvent signal = new ManualResetEvent(false);
-            MassTransitMessage messageTosend = new MassTransitMessage()
+            MassTransitStreamInsightEvent recievedMessage = null;
+            MassTransitDomainEvent domainEventTosend = new MassTransitDomainEvent()
                                                    {
                                                        Premium = 123.56m,
                                                        Brand = "brand A",
@@ -32,28 +34,33 @@ namespace EDA.Analytics.Adapters.Tests.Integration
 
             var producer = SetupMassTransitProducer();
             var consumer = SetupMassTransitConsumer();
-            consumer.SubscribeHandler<MassTransitMessage>(
+            var unsubConsumer = consumer.SubscribeHandler<MassTransitStreamInsightEvent>(
                 (m) =>
-                    {
-                        recievedMessage = m;
-                        signal.Set();
-                    }
+                {
+                    recievedMessage = m;
+                    signal.Set();
+                }
                 );
 
-            var query = SetupStreamInsight();
-            query.Start();
-
+           new Thread(() => SetupStreamInsight()).Start(); //SetupStreamInsightWCF(); //
+           // query.Start();
+           //signal.WaitOne(2000);
+           
             //When
-            //Publish a masstransit message
-            producer.Publish<MassTransitMessage>(messageTosend);
-            signal.WaitOne(1000);
-            query.Stop();
+            //Publish a masstransit domainEvent
+            producer.Publish<MassTransitDomainEvent>(domainEventTosend);
+            signal.WaitOne(20000);
+            //query.Stop();
 
             //Then
-            //Check we get a message out the other side
+            //Check we get a domainEvent out the other side
             Assert.That(recievedMessage, Is.Not.Null);
-            Assert.That(recievedMessage.EnquiryId == messageTosend.EnquiryId);
-
+            Assert.That(recievedMessage.EnquiryId == domainEventTosend.EnquiryId);
+            producer.Dispose();
+            unsubConsumer();
+            consumer.Dispose();
+            signal.Set();
+            signal.Dispose();
         }
 
         private IServiceBus SetupMassTransitProducer()
@@ -76,7 +83,7 @@ namespace EDA.Analytics.Adapters.Tests.Integration
             });
         }
 
-        private Query SetupStreamInsight()
+        private void SetupStreamInsight()
         {
             using (var server = Server.Create("HomeStreamInsight"))
             {
@@ -84,10 +91,10 @@ namespace EDA.Analytics.Adapters.Tests.Integration
 
                 // Define a simple query
                 CepStream<BrandQuote> input = CepStream<BrandQuote>.Create("Input");
-                var streamDefinition = from e in input
-                                       //where e.Premium % 10 == 0
+                var streamDefinition = from e in input 
                                        select e;
-
+                //where e.Premium % 10 == 0
+                                       
                 // Bind query
                 var inputConfig = new BrandQuoteInputConfig()
                                       {
@@ -98,7 +105,14 @@ namespace EDA.Analytics.Adapters.Tests.Integration
                                          SendOnMassTransitFrom = new Uri("rabbitmq://localhost/StreamInsightOutputAdapter")
                                       };
                
-            return CreateQuery(application, streamDefinition, inputConfig, outputConfig); 
+            Query query = CreateQuery(application, streamDefinition, inputConfig, outputConfig);
+           
+               
+            query.Start();
+                
+                signal.WaitOne();
+
+                query.Stop();
             }
         }
 
@@ -113,5 +127,60 @@ namespace EDA.Analytics.Adapters.Tests.Integration
             var query = application.CreateQuery("Query", null, binder);
             return query;
         }
+
+        /// <summary>
+        /// Creates and binds a query with a single input stream.
+        /// </summary>
+        private static Query CreateQueryWCF(Application application, CepStream<EventType> streamDefinition, Uri inputAddress, Uri outputAddress)
+        {
+            QueryTemplate template = application.CreateQueryTemplate("QueryTemplate", null, streamDefinition);
+            QueryBinder binder = new QueryBinder(template);
+            InputAdapter inputAdapter = application.CreateInputAdapter<WcfInputAdapterFactory>("InputAdapter", null);
+            binder.BindProducer("Input", inputAdapter, inputAddress, EventShape.Point);
+            OutputAdapter outputAdapter = application.CreateOutputAdapter<WcfOutputAdapterFactory>("OutputAdapter", null);
+            binder.AddConsumer("Output", outputAdapter, outputAddress, EventShape.Point, StreamEventOrder.FullyOrdered);
+            Query query = application.CreateQuery("Query", null, binder);
+            return query;
+        }
+    
+        private sealed class EventType
+        {
+            public int X { get; set; }
+        }
+
+        private void SetupStreamInsightWCF()
+        {
+
+            using (Server server = Server.Create("Default"))
+            {
+                Application application = server.CreateApplication("Application");
+
+                // Define a simple query
+                CepStream<EventType> input = CepStream<EventType>.Create("Input");
+                var streamDefinition = from e in input
+                                       where e.X % 10 == 0
+                                       select e;
+
+                // Bind query
+                Uri inputAddress = new Uri("http://localhost:8080/InputAdapter");
+                Uri outputAddress = new Uri("http://localhost:8080/OutputAdapter");
+                Query query = CreateQueryWCF(application, streamDefinition, inputAddress, outputAddress);
+
+               // return query;
+
+                query.Start();
+                Console.WriteLine("Query started.");
+                Console.WriteLine("Press enter to stop query.");
+
+               
+                Console.ReadLine();
+
+                query.Stop();
+                Console.WriteLine("Query stopped.");
+            
+            }
+        }
+
+
     }   
 }

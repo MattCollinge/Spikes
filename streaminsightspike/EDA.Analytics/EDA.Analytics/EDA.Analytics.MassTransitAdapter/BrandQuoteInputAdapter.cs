@@ -35,12 +35,12 @@ namespace EDA.Analytics.Adapters
 
         public override void Start()
         {
-           _usubscribeAction = _bus.SubscribeHandler<MassTransitMessage>((m) => ProduceEvents(m));
+            _usubscribeAction = _bus.SubscribeHandler<MassTransitDomainEvent>((m) => ProduceEvents(m));
         }
 
         public override void Resume()
         {
-            _usubscribeAction = _bus.SubscribeHandler<MassTransitMessage> ((m) => ProduceEvents(m));
+            _usubscribeAction = _bus.SubscribeHandler<MassTransitDomainEvent>((m) => ProduceEvents(m));
         }
 
         protected override void Dispose(bool disposing)
@@ -51,7 +51,7 @@ namespace EDA.Analytics.Adapters
         /// <summary>
         /// Main loop
         /// </summary>
-        private void ProduceEvents(MassTransitMessage message)
+        private void ProduceEvents(MassTransitDomainEvent domainEvent)
         {
             var currEvent = default(PointEvent<BrandQuote>);
 
@@ -77,28 +77,33 @@ namespace EDA.Analytics.Adapters
                             currEvent.StartTime = DateTimeOffset.Now;
                             currEvent.Payload = new BrandQuote()
                                                     {
-                                                        Brand = message.Brand,
-                                                        EnquiryId = message.EnquiryId,
-                                                        Premium = message.Premium,
-                                                        ProviderQuoteId = message.ProviderQuoteId,
-                                                        SourceQuoteEngine = message.SourceQuoteEngine
+                                                        Brand = domainEvent.Brand,
+                                                        EnquiryId = domainEvent.EnquiryId,
+                                                        Premium = domainEvent.Premium,
+                                                        ProviderQuoteId = domainEvent.ProviderQuoteId,
+                                                        SourceQuoteEngine = domainEvent.SourceQuoteEngine
                                                     };
                             _pendingEvent = null;
                             //PrintEvent(currEvent);
                             Enqueue(ref currEvent);
 
                             // Also send an CTI event
-                            EnqueueCtiEvent(DateTimeOffset.Now.AddTicks(2));
+                            //EnqueueCtiEvent(DateTimeOffset.Now.AddTicks(2));
+
+                        }
+                        catch (Exception e)
+                        {
+                            PrepareToStop(currEvent);
+                            Stopped();
 
                         }
                         finally
                         {
-
+                            //if(AdapterState == AdapterState.Suspended )
+                            //    Ready();
                         }
                     }
-                    PrepareToStop(currEvent);
-                    Stopped();
-
+                   
                 }
 
                 if (_pendingEvent != null)
@@ -132,7 +137,16 @@ namespace EDA.Analytics.Adapters
        
     }
 
-    public class MassTransitMessage
+    public class MassTransitDomainEvent
+    {
+        public string Brand;
+        public Guid EnquiryId;
+        public decimal Premium;
+        public Guid ProviderQuoteId;
+        public string SourceQuoteEngine;
+    }
+
+    public class MassTransitStreamInsightEvent : MassTransitDomainEvent
     {
         public string Brand;
         public Guid EnquiryId;

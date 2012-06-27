@@ -11,7 +11,6 @@ namespace EDA.Analytics.Adapters
     public class BrandQuoteOutputAdapter : TypedPointOutputAdapter<BrandQuote>
     {
         public readonly static IFormatProvider QuoteFormatProvider = CultureInfo.InvariantCulture.NumberFormat;
-        private PointEvent<BrandQuote> currentEvent;
         private BrandQuoteOutputConfig _config;
         private IServiceBus _bus;
 
@@ -75,17 +74,19 @@ namespace EDA.Analytics.Adapters
 
             try
             {
-
-                //Create Message for MassTransit and publish
-                var message = new MassTransitMessage()
-                                  {
-                                      Brand = currentEvent.Payload.Brand,
-                                      EnquiryId = currentEvent.Payload.EnquiryId,
-                                      ProviderQuoteId = currentEvent.Payload.ProviderQuoteId,
-                                      Premium = currentEvent.Payload.Premium,
-                                      SourceQuoteEngine = currentEvent.Payload.SourceQuoteEngine
-                                  };
-                _bus.Publish<MassTransitMessage>(message);
+                if (currentEvent.EventKind != EventKind.Cti)
+                {
+                    //Create Message for MassTransit and publish
+                    var message = new MassTransitStreamInsightEvent()
+                                      {
+                                          Brand = currentEvent.Payload.Brand,
+                                          EnquiryId = currentEvent.Payload.EnquiryId,
+                                          ProviderQuoteId = currentEvent.Payload.ProviderQuoteId,
+                                          Premium = currentEvent.Payload.Premium,
+                                          SourceQuoteEngine = currentEvent.Payload.SourceQuoteEngine
+                                      };
+                    _bus.Publish<MassTransitStreamInsightEvent>(message);
+                }
             }
             finally
             {
@@ -100,5 +101,5 @@ namespace EDA.Analytics.Adapters
         }
     }
 
-  
+   
 }
