@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtM.EDA", "CtM.EDA\CtM.EDA.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CtM.EDA.Tests", "CtM.EDA.Tests\CtM.EDA.Tests.csproj", "{72D25D74-D1BC-4782-AA41-39E625B823D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVT.Domain", "MVT.Domain\MVT.Domain.csproj", "{05A3EB6B-CED7-4703-BEAC-F256F08A47AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{72D25D74-D1BC-4782-AA41-39E625B823D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72D25D74-D1BC-4782-AA41-39E625B823D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72D25D74-D1BC-4782-AA41-39E625B823D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05A3EB6B-CED7-4703-BEAC-F256F08A47AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05A3EB6B-CED7-4703-BEAC-F256F08A47AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05A3EB6B-CED7-4703-BEAC-F256F08A47AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05A3EB6B-CED7-4703-BEAC-F256F08A47AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

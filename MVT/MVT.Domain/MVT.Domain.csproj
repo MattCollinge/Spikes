@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BDDF11C8-CA72-4807-A474-04700CBC22CB}</ProjectGuid>
+    <ProjectGuid>{05A3EB6B-CED7-4703-BEAC-F256F08A47AA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MVT.Domain.Tests</RootNamespace>
-    <AssemblyName>MVT.Domain.Tests</AssemblyName>
+    <RootNamespace>MVT.Domain</RootNamespace>
+    <AssemblyName>MVT.Domain</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,7 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,29 +40,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplyInvalidVariantWeightScheduleSpec.cs" />
-    <Compile Include="AssociateSuccessCriteriaWithMVTestSpec.cs" />
-    <Compile Include="SetupSuccessCriteriaSpec.cs" />
-    <Compile Include="SetupVariantInMVTestSpec.cs" />
-    <Compile Include="SetupMVTestSpec.cs" />
-    <Compile Include="PauseMVTestSpec.cs" />
+    <Compile Include="Aggregates\MVTestAR.cs" />
+    <Compile Include="Aggregates\SuccessCriteriaAR.cs" />
+    <Compile Include="Commands\AssociateSuccessCriteriaWithMVTest.cs" />
+    <Compile Include="Commands\SetUpNewMVTest.cs" />
+    <Compile Include="Commands\SetupSuccessCriteria.cs" />
+    <Compile Include="Commands\SetupVariant.cs" />
+    <Compile Include="Commands\ApplyVariantWeightSchedule.cs" />
+    <Compile Include="Entities\Variant.cs" />
+    <Compile Include="Events\MVTestPaused.cs" />
+    <Compile Include="Events\NewMVTestSetup.cs" />
+    <Compile Include="Events\NewVariantSetup.cs" />
+    <Compile Include="Events\SuccessCriteriaSetup.cs" />
+    <Compile Include="Events\VariantWeightScheduleApplied.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ApplyVariantWeightScheduleSpec.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CtM.EDA.Tests\CtM.EDA.Tests.csproj">
-      <Project>{72D25D74-D1BC-4782-AA41-39E625B823D9}</Project>
-      <Name>CtM.EDA.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CtM.EDA\CtM.EDA.csproj">
       <Project>{17F5A4D2-64DF-4BB8-BCE2-953513AF476A}</Project>
       <Name>CtM.EDA</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MVT.Domain\MVT.Domain.csproj">
-      <Project>{05A3EB6B-CED7-4703-BEAC-F256F08A47AA}</Project>
-      <Name>MVT.Domain</Name>
-    </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,14 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CtM.EDA.Tests
 {
     [Specification]
     public abstract class DomainTestFixture<TCommand, TAggregate>
         where TCommand : Command
-        where TAggregate : AggregateRoot, new() 
+        where TAggregate : AggregateRoot, new()
     {
-        protected IEnumerable<Event> PublishedEvents { get; private set; }
+        private IEnumerable<Event> _publishedEvents;
+
+        protected IEnumerable<Event> PublishedEvents
+        {
+            get { return _publishedEvents ?? new Event[0]; }
+            private set { _publishedEvents = value; }
+        }
+
         protected Exception CaughtException;
         protected abstract IEnumerable<Event> Given();
         protected abstract TCommand When();
@@ -19,7 +27,7 @@ namespace CtM.EDA.Tests
         public void Setup()
         {
 
-            var testRepository = new TestRepository<TAggregate>(Given());
+            var testRepository = new TestRepository<TAggregate>(Given().ToList());
 
             try
             {
