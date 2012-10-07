@@ -91,6 +91,15 @@ namespace MVT.Domain.Aggregates
             ApplyChange(@event);
         }
 
+        public void RegisterExposure(ref IRegisterExposureToVariants registrationHolder, Guid visitorId, Guid visitId, Guid accountId)
+        {
+            //Work out which variant to use. For now just pick the 1st one!
+            //TODO: implement proper random selection
+            var variantId = this._variants.Values.First().variantName;
+            //Register chosen variant with IRegisterExposureToVariants Interface (MVTestExposedAR)
+            registrationHolder.RegisterVisitorVariant(Id, visitorId, visitId, accountId, variantId);
+        }
+
         #endregion
 
         #region Event Handling
@@ -129,11 +138,11 @@ namespace MVT.Domain.Aggregates
         }
 
         #endregion
+
     }
 
-    public class SuccessCriteriaAssociated : Event
+    public interface IRegisterExposureToVariants
     {
-        public Guid MVTestId;
-        public Guid SuccessCriteriaId;
+        void RegisterVisitorVariant(Guid id, Guid visitorId, Guid visitId, Guid accountId, string variantId);
     }
 }

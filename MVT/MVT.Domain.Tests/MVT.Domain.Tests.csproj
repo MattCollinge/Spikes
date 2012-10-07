@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ApplyInvalidVariantWeightScheduleSpec.cs" />
     <Compile Include="AssociateSuccessCriteriaWithMVTestSpec.cs" />
+    <Compile Include="RegisterMVTestExposureSpec.cs" />
     <Compile Include="SetupSuccessCriteriaSpec.cs" />
     <Compile Include="SetupVariantInMVTestSpec.cs" />
     <Compile Include="SetupMVTestSpec.cs" />

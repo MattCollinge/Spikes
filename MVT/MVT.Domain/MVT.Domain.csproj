@@ -41,16 +41,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Aggregates\MVTestAR.cs" />
+    <Compile Include="Aggregates\MVTestVisitorAR.cs" />
     <Compile Include="Aggregates\SuccessCriteriaAR.cs" />
     <Compile Include="Commands\AssociateSuccessCriteriaWithMVTest.cs" />
+    <Compile Include="Commands\RegisterExposure.cs" />
     <Compile Include="Commands\SetUpNewMVTest.cs" />
     <Compile Include="Commands\SetupSuccessCriteria.cs" />
     <Compile Include="Commands\SetupVariant.cs" />
     <Compile Include="Commands\ApplyVariantWeightSchedule.cs" />
     <Compile Include="Entities\Variant.cs" />
     <Compile Include="Events\MVTestPaused.cs" />
+    <Compile Include="Events\MVTestVisitorExposed.cs" />
     <Compile Include="Events\NewMVTestSetup.cs" />
     <Compile Include="Events\NewVariantSetup.cs" />
+    <Compile Include="Events\SuccessCriteriaAssociated.cs" />
     <Compile Include="Events\SuccessCriteriaSetup.cs" />
     <Compile Include="Events\VariantWeightScheduleApplied.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
